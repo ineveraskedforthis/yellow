@@ -131,6 +131,7 @@ class Champion(Creature):
         self.exp = 0
         self.level = 0
         self.depth = 0
+        self.status = 'idle'
 
     def give(self, item):
         #tmp = self.equip.try_equip(item)
@@ -160,7 +161,6 @@ class Champion(Creature):
         return True
 
     def equip_slot(self, ind):
-        print('!')
         tmp1 = self.inventory.get_ind(ind)       
         if tmp1 == -1:
             return

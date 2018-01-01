@@ -3,7 +3,7 @@ import random
 
 class ChampionIdle(State):
     def Enter(agent):
-        print('champions is idle')
+        agent.status = 'idle'
 
     def Execute(agent):
         pass
@@ -11,7 +11,7 @@ class ChampionIdle(State):
 
 class ChampionGoDungeon(State):
     def Enter(agent):
-        print('champion enters the dungeon')
+        agent.status = 'in dungeon'
         agent.depth = 1
 
     def Execute(agent):
@@ -34,11 +34,21 @@ class ChampionGoDungeon(State):
             agent.give(agent.world.get_random_treasure(agent.depth))
         elif event == 'ENEMY':
             tmp = agent.world.get_random_enemy(agent.depth)
+            agent.change_state(ChampionFights)
             agent.world.start_duel(agent, tmp)
+
+class ChampionFights(State):
+    def Enter(agent):
+        agent.status = 'fighting'
+
+    def Execute(agent):
         if agent.hp == 0:
             agent.depth = 0
             agent.hp = agent.maxhp
             agent.change_state(ChampionSells)
+        else:
+            agent.change_state(ChampionGoDungeon)
+
 
 class ChampionGoHome(State):
     def Execute(agent):

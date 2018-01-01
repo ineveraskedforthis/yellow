@@ -157,6 +157,7 @@ def main():
     StatusFrame.showUpdatingText(lambda: str(player.hp) + '/' + str(player.maxhp) + ' hp')
     StatusFrame.showUpdatingText(lambda: str(player.exp) + '/' + str(exp_to_next_level(player.level)) + ' exp')
     StatusFrame.showUpdatingText(lambda: 'money: ' + str(player.money))
+    StatusFrame.showUpdatingText(lambda: player.status)
 
     # ControlButtons = Window(app)
     ControlButtons = MyLabelFrame(app, 'Control')
