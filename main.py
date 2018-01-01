@@ -8,8 +8,12 @@ import random
 import tkinter as tk
 from PIL import Image, ImageTk
 
+
 random.seed()
 PAUSE = False
+PLAYER_NAME = 'susek'
+world = World('items.txt', 'creatures.txt', 'dungeon.txt')
+player = Champion(world, PLAYER_NAME, 100)   
 
 def pause():
     global PAUSE
@@ -17,9 +21,6 @@ def pause():
 
 
 
-world = World('items.txt', 'creatures.txt', 'dungeon.txt')
-player = Champion(world, 'susek', 100)
-world.set_player(player)
 
 class UpdatingLabel(tk.Label):
     def __init__(self, master = None, f = lambda: -1):
@@ -120,6 +121,22 @@ class InventorySlot(Window):
 
 
 def main():
+
+    def end_registration(master, s):
+        global PLAYER_NAME
+        player.set_name(s)
+        master.destroy()
+
+    EntryWindow = tk.Tk()
+    NameEntry = tk.Entry(EntryWindow, width = 20)
+    NameEntryLabel = tk.Label(EntryWindow, text = "Nickname:", width = 10)
+    NameEntryLabel.grid(row = 0, column = 0)
+    NameEntry.grid(row = 0, column = 1)
+    tk.Button(EntryWindow, text = 'Ok', command = lambda: end_registration(EntryWindow, NameEntry.get())).grid(row = 1, column = 3)
+    tk.mainloop()    
+    
+    world.set_player(player)
+
     root = tk.Tk()
     root.geometry("600x600")
 

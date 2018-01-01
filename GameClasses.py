@@ -179,6 +179,9 @@ class Champion(Creature):
         if tmp != -1:
             self.money += tmp.cost
 
+    def set_name(self, s):
+        self.name = s
+
 
 class Item():
     def __init__(self, name, typ, slot, damage, armour, weight):
