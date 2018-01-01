@@ -38,6 +38,9 @@ class Creature(adam):
     def get_arm(self):
         return self.arm + self.equip.get_equip_armour()
 
+    def restore_hp(self):
+        self.hp = self.maxhp
+
 
 class Doll:
     def __init__(self, owner):
@@ -132,6 +135,7 @@ class Champion(Creature):
         self.level = 0
         self.depth = 0
         self.status = 'idle'
+        self.skillpoints = 0
 
     def give(self, item):
         #tmp = self.equip.try_equip(item)
@@ -149,7 +153,9 @@ class Champion(Creature):
             self.levelup()
 
     def levelup(self):
-         self.level += 1
+        self.maxhp += 1
+        self.level += 1
+        self.skillpoints += 1
 
     def return_to_town(self):
         self.change_state(ChampionGoHome)

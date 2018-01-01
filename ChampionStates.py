@@ -53,5 +53,5 @@ class ChampionFights(State):
 class ChampionGoHome(State):
     def Execute(agent):
         agent.depth = 0
-        agent.hp = agent.maxhp
+        agent.restore_hp()
         agent.change_state(ChampionIdle)

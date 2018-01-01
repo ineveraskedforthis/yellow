@@ -48,7 +48,7 @@ class Window(tk.Frame):
 
     def xxxxxxx(self, label, f):
         def update():
-            self.updateworld()
+            # self.updateworld()
             label.config(text = f())
             label.after(1000, update)
         update()
@@ -132,13 +132,13 @@ def main():
     NameEntryLabel = tk.Label(EntryWindow, text = "Nickname:", width = 10)
     NameEntryLabel.grid(row = 0, column = 0)
     NameEntry.grid(row = 0, column = 1)
-    tk.Button(EntryWindow, text = 'Ok', command = lambda: end_registration(EntryWindow, NameEntry.get())).grid(row = 1, column = 3)
+    tk.Button(EntryWindow, text = 'Ok', command = lambda: end_registration(EntryWindow, NameEntry.get())).grid(row = 0, column = 3)
     tk.mainloop()    
     
     world.set_player(player)
 
     root = tk.Tk()
-    root.geometry("600x600")
+    root.geometry("700x700")
 
     app = Window(root)
     app.master.title("GAME")
@@ -158,6 +158,7 @@ def main():
     StatusFrame.showUpdatingText(lambda: str(player.exp) + '/' + str(exp_to_next_level(player.level)) + ' exp')
     StatusFrame.showUpdatingText(lambda: 'money: ' + str(player.money))
     StatusFrame.showUpdatingText(lambda: player.status)
+    StatusFrame.showUpdatingText(lambda: 'skill points: ' + str(player.skillpoints))
 
     # ControlButtons = Window(app)
     ControlButtons = MyLabelFrame(app, 'Control')
@@ -177,10 +178,20 @@ def main():
         tag = '' + i
         EquipFrame.addUpdatingLabel(lambda tag = tag: tag + ': ' + player.equip.get_tag_text(tag))
 
-    ControlButtons.place(x = 0, y = 0)
-    StatusFrame.pack()
-    InventoryFrame.pack(side = tk.RIGHT)
-    EquipFrame.pack()
+    ControlButtons.place(x = 4, y = 0)
+    StatusFrame.place(x = 4, y = 100)
+    InventoryFrame.place(x = 200, y = 0)
+    EquipFrame.place(x = 4, y = 300)
+
+    Updater = tk.Label(app)
+    def WorldUpdater(label):
+        def update():
+            world.update()
+            label.after(1000, update)
+        update()
+    WorldUpdater(Updater)
+
+
 
     root.mainloop()
 
