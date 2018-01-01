@@ -88,7 +88,7 @@ class Doll:
 
 class Inventory():
     def __init__(self):
-        self.max_items = 5
+        self.max_items = 6
         self.items = [-1] * self.max_items
         self.is_full = False
 
@@ -113,7 +113,7 @@ class Inventory():
             return -1
         return self.items[ind].name
 
-    def eraze_ind(self, ind):
+    def erase_ind(self, ind):
         self.items[ind] = -1
 
 class Skills():
@@ -136,6 +136,7 @@ class Champion(Creature):
         self.depth = 0
         self.status = 'idle'
         self.skillpoints = 0
+        # self.stats
 
     def give(self, item):
         #tmp = self.equip.try_equip(item)
@@ -174,7 +175,7 @@ class Champion(Creature):
         slot = tmp1.slot
         if tmp2 == -1:
             self.equip.set_tag(slot, tmp1)
-            self.inventory.eraze_ind(ind)
+            self.inventory.erase_ind(ind)
             return
         self.inventory.set_ind(ind, tmp2)
         self.equip.set_tag(slot, tmp1)

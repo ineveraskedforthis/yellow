@@ -41,11 +41,6 @@ class Window(tk.Frame):
         text = tk.Label(self, text = s)
         text.pack()
 
-    def updateworld(self):
-        global world
-        if not PAUSE:
-            world.update()
-
     def xxxxxxx(self, label, f):
         def update():
             # self.updateworld()
@@ -58,8 +53,8 @@ class Window(tk.Frame):
         text.pack()
         self.xxxxxxx(text, f)
 
-    def addButton(self, text, f):
-        button = tk.Button(self, text = text, width = 20, command = f)
+    def addButton(self, text, f, width = 20):
+        button = tk.Button(self, text = text, width = width, command = f)
         button.pack()
 
     def check_conditions(self, button, condition):
@@ -98,6 +93,8 @@ class MyLabelFrame(Window, tk.LabelFrame):
 class InventorySlot(Window):
     def __init__(self, master = None, index = 0):
         Window.__init__(self, master)
+        self.config(highlightbackground = "black", highlightcolor = "black", highlightthickness = 1)
+        self.config(bd = 4)
         self.inv_ind = index
         self.init_slot()
         self.name = -1        
@@ -106,6 +103,7 @@ class InventorySlot(Window):
         tmp = player.inventory.get_ind(self.inv_ind)
         self.addConditionButton('sell', 10, lambda: player.sell_slot(self.inv_ind), lambda: player.depth == 0)
         self.addConditionButton('equip', 10, lambda: player.equip_slot(self.inv_ind), lambda: player.can_wear_slot(self.inv_ind))
+        self.addButton('throw out', lambda: player.inventory.erase_ind(self.inv_ind), 10)
         self.showUpdatingText(lambda: 'cost: ' + str(self.cost()))
         self.showUpdatingText(lambda: player.inventory.get_ind_name(self.inv_ind))
         #self.addImageLabel()
@@ -168,8 +166,10 @@ def main():
     ControlButtons.addButton('Pause', pause)
 
     InventoryFrame = MyLabelFrame(app, 'Inventory')
-    for i in range(5):
-        InventoryFrame.addInventorySlot(i)
+    for i in range(6):
+        tmp = InventorySlot(InventoryFrame, i)
+        tmp.grid(column = i // 3, row = i % 3)
+
 
     EquipFrame = MyLabelFrame(app, 'Equip')
 
@@ -181,17 +181,17 @@ def main():
     ControlButtons.place(x = 4, y = 0)
     StatusFrame.place(x = 4, y = 100)
     InventoryFrame.place(x = 200, y = 0)
-    EquipFrame.place(x = 4, y = 300)
+    EquipFrame.place(x = 4, y = 290)
+
 
     Updater = tk.Label(app)
     def WorldUpdater(label):
         def update():
-            world.update()
-            label.after(1000, update)
+            if not PAUSE:
+                world.update()
+            label.after(100, update)
         update()
     WorldUpdater(Updater)
-
-
 
     root.mainloop()
 

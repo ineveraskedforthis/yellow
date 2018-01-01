@@ -17,7 +17,10 @@ class ChampionGoDungeon(State):
     def Execute(agent):
         def magicformula1(x):
             tmp = random.random()
-            if tmp < -(1 / (x + 2.5)) + 0.8:
+            if tmp >= 0.6:
+                return('NOTHING')
+            tmp = random.random()
+            if tmp < -(1 / (x + 2.5)) + 0.85:
                 return('ENEMY')
             elif tmp >= 0.9:
                 return('TREASURE')
